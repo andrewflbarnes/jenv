@@ -2,6 +2,6 @@
 
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 
-docker build --tag jenv:test $SCRIPT_DIR/test
+docker build --tag jenv:test -f test/Dockerfile "$SCRIPT_DIR" || exit $?
 
-docker run --mount type=bind,source=$SCRIPT_DIR,target=/root/.jenv jenv:test /root/.jenv/test/bats/bin/bats /root/.jenv/test
+docker run -it jenv:test /root/.jenv/test/bats/bin/bats /root/.jenv/test

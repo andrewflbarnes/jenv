@@ -16,6 +16,14 @@ teardown() {
   rm -rf $tmp_dir_1 $tmp_dir_2
 }
 
+@test "system version works" {
+  jenv global system
+
+  assert_equal "$(jenv version-name)" "system"
+  assert_equal "$JAVA_HOME" ""
+  assert_equal "$(jenv javahome)" ""
+}
+
 @test "global version is set globally" {
   jenv add /usr/lib/jvm/graalvm-ce-java11-22.3.3/
 
