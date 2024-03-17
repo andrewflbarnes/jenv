@@ -9,9 +9,7 @@ setup() {
 }
 
 teardown() {
-  jenv global --unset
-  jenv shell --unset
-  rm -f ~/.jenv/versions/*
+  reset_jenv
 
   rm -rf $tmp_dir_1 $tmp_dir_2
 }
@@ -32,7 +30,7 @@ teardown() {
   cd $tmp_dir_1
 
   assert_equal "$(jenv version-name)" 11
-  [ $(realpath $(jenv javahome)) = "/usr/lib/jvm/graalvm-ce-java11-22.3.3" ]
+  assert_equal $(realpath $(jenv javahome)) "/usr/lib/jvm/graalvm-ce-java11-22.3.3"
 }
 
 @test "local is set for current directory" {
@@ -46,7 +44,7 @@ teardown() {
   jenv local 18
 
   assert_equal "$(jenv version-name)" 18
-  [ $(realpath $(jenv javahome)) = "/usr/lib/jvm/zulu18-ca" ]
+  assert_equal $(realpath $(jenv javahome)) "/usr/lib/jvm/zulu18-ca"
 }
 
 @test "local is set for current directory only, reverts to global" {
@@ -62,7 +60,7 @@ teardown() {
   cd $tmp_dir_2
 
   assert_equal "$(jenv version-name)" 11
-  [ $(realpath $(jenv javahome)) = "/usr/lib/jvm/graalvm-ce-java11-22.3.3" ]
+  assert_equal $(realpath $(jenv javahome)) "/usr/lib/jvm/graalvm-ce-java11-22.3.3"
 }
 
 @test "shell sets for current shell" {

@@ -4,9 +4,7 @@ load 'test_helper/bats-support/load'
 load 'test_helper/bats-assert/load'
 
 teardown() {
-  jenv global --unset
-  jenv shell --unset
-  rm -f ~/.jenv/versions/*
+  reset_jenv
 }
 
 @test "add openjdk 1.7.0" {
