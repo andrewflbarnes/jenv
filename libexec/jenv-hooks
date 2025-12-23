@@ -20,8 +20,8 @@ if [ -z "$JENV_COMMAND" ]; then
 fi
 
 shell="$2"
-if [ -z $shell ]; then
-  shell="bash"
+if [ -z "$shell" ]; then
+  shell="${JENV_SHELL:-bash}"
 fi
 
 resolve_link() {

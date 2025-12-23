@@ -48,7 +48,7 @@ exportVariable(){
 #fi
 
 
-if [[ ! -z "$JAVA_HOME" ]] ; then
+if [[ -n "$JAVA_HOME" ]] ; then
   if [[ -z "$JENV_FORCEJAVAHOME" ]] ; then
     cwarn "JAVA_HOME variable already set, scripts that use it directly could not use java version set by jenv"
   else
@@ -58,7 +58,7 @@ else
     cinfo "No JAVA_HOME set"
 fi
 
-JAVA_BIN=`command -v java`
+JAVA_BIN=$(command -v java)
 
 EXPECTED_JAVA="$JENV_ROOT/shims/java"
 
@@ -75,7 +75,11 @@ if [ "$JENV_LOADED" = "1" ]; then
   cinfo "Jenv is correctly loaded"
 
 else
-  shell="$(basename "$SHELL")"
+  shell="$(ps -p "$PPID" -o 'args=' 2>/dev/null || true)"
+  shell="${shell%% *}"
+  shell="${shell##-}"
+  shell="${shell:-$SHELL}"
+  shell="${shell##*/}"
 
   case "$shell" in
     bash )
@@ -87,12 +91,16 @@ else
     ksh )
       profile="$HOME/.profile"
       ;;
+    fish )
+      profile="$HOME/.config/fish/config.fish"
+      ;;
     * )
       profile='your profile'
       ;;
   esac
 
   cwarn "Jenv is not loaded in your $shell"
+  # shellcheck disable=SC2016
   cwarn 'To fix : \techo '\''eval "$(jenv init -)"'\'' >>' "$profile"
 fi
 
