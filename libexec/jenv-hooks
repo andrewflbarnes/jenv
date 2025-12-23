@@ -31,8 +31,8 @@ resolve_link() {
 }
 
 realpath() {
-  local cwd="$(pwd)"
-  local base="$(basename $1)"
+  local cwd; cwd="$(pwd)"
+  local base; base="$(basename "$1")"
   local path="$1"
 
   while [ -n "$path" ]; do
@@ -50,18 +50,18 @@ for path in ${JENV_HOOK_PATH//:/$'\n'}; do
 
   case "$shell" in
   bash )
-    for script in $path/"$JENV_COMMAND"/*.bash; do
-    echo $(realpath "$script")
+    for script in "$path/$JENV_COMMAND"/*.bash; do
+    realpath "$script"
     done
     ;;
   zsh )
-    for script in $path/"$JENV_COMMAND"/*.zsh; do
-    echo $(realpath "$script")
+    for script in "$path/$JENV_COMMAND"/*.zsh; do
+    realpath "$script"
     done 
     ;;
   fish )
-    for script in $path/"$JENV_COMMAND"/*.fish; do
-    echo $(realpath "$script")
+    for script in "$path/$JENV_COMMAND"/*.fish; do
+    realpath "$script"
     done
     ;;
 esac
